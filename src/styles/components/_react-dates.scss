@@ -1,0 +1,9 @@
+.single-date-picker-list-item {
+  display: inline-block;
+  .SingleDatePicker .SingleDatePickerInput {
+    border: none !important;
+    .DateInput_input {
+      font-size: 1rem;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+.side-bar-style {
+  width: 250px !important;
+}
+
+.ui.visible.left.sidebar ~ .fixed, .ui.visible.left.sidebar ~ .pusher {
+  width: calc(100% - 250px);
+  -webkit-transform: translate3d(250px, 0, 0);
+  transform: translate3d(250px, 0, 0);
+}
+
+.ui.icon.menu .item {
+  text-align: left;
+}
+
+.menu-with-header {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+  .menu {
+    margin: 0 !important;
+  }
+  .header {
+    padding: 0 .1857143em;
+    i {
+      width: 0.8em !important;
+      margin: 0 !important;
+    }
+  }
+}
