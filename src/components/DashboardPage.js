@@ -5,11 +5,13 @@ import {
     Image,
     Label,
     Icon,
-    Checkbox,
+    Grid,
+    Popup,
 } from 'semantic-ui-react'
-import {SingleDatePicker} from 'react-dates';
 import {connect} from "react-redux";
 import moment from "moment/moment";
+
+import {startListPokemon} from '../actions/pokedex'
 
 
 export class DashboardPage extends React.Component {
@@ -22,6 +24,11 @@ export class DashboardPage extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.props.listPokemon();
+    }
+
+
     onDateChange = (createdAt) => {
         if (createdAt) {
             this.setState(() => ({createdAt}));
@@ -32,178 +39,52 @@ export class DashboardPage extends React.Component {
     };
 
     render() {
+        const {pokemonsList} = this.props.pokemons;
+        var pokemonShow=[];
+        if(pokemonsList)
+            pokemonShow=pokemonsList.slice(0,20);
         return (
-
-            <Card fluid className={'card-list-activities'}>
-                <Card.Content className={'card-header-activities'}>
-                    <Card.Header  className={'section-activities'}>
-                        <Image size='mini' src='/images/integrations/asana-logo.png'/>
-                        <div className={'title-activities'}><span>Asana</span></div>
-                    </Card.Header>
-                </Card.Content>
-                <Card.Content>
-                    <List divided relaxed='very'>
-                        <List.Item>
-                            <div className={'checkbox-list'}>
-                                <Checkbox/>
+            <Card.Group centered>
+                {pokemonShow && pokemonShow.map(({id, name, weight, height, base_experience, sprites}, index) => (
+                    <Card key={id} >
+                        <Card.Content>
+                            <div className="pokemon-sprite">
+                                <Image floated='right' size='tiny'
+                                       src={sprites['front_default']}/>
                             </div>
-                            <List.Content>
-                                <List.Header as='a'>Rachel</List.Header>
-                                <List.Description>
-                                    Last seen watching{' '}
-                                    <a>
-                                        <b>Arrested Development</b>
-                                    </a>{' '}
-                                    just now.
-                                </List.Description>
-                            </List.Content>
-                            <List.Content floated='right'>
-                                <Label as='a' basic>
-                                    Startup-chile
-                                </Label>
-                                <div className={'single-date-picker-list-item'}>
-                                    <SingleDatePicker small
-                                                      date={this.state.createdAt}
-                                                      onDateChange={this.onDateChange}
-                                                      focused={this.state.calendarFocused}
-                                                      onFocusChange={this.onFocusChange}
-                                                      numberOfMonths={1}
-                                                      isOutsideRange={() => false}
-                                    />
-                                </div>
-                            </List.Content>
-                        </List.Item>
-                        <List.Item>
-                            <div className={'checkbox-list'}>
-                                <Checkbox/>
-                            </div>
-                            <List.Content>
-                                <List.Header as='a'>Lindsay</List.Header>
-                                <List.Description>
-                                    Last seen watching{' '}
-                                    <a>
-                                        <b>Bob's Burgers</b>
-                                    </a>{' '}
-                                    10 hours ago.
-                                </List.Description>
-                            </List.Content>
-                            <List.Content floated='right'>
-                                <Label as='a' basic>
-                                    STARTUP CHILE BUDGETS
-                                </Label>
-                            </List.Content>
-                        </List.Item>
-                    </List>
-                </Card.Content>
-                <Card.Content className={'card-header-activities'}>
-                    <Card.Header  className={'section-activities'}>
-                        <Image size='mini' src='/images/integrations/jira-isotipo.png'/>
-                        <div className={'title-activities'}><span>Jira</span></div>
-                    </Card.Header>
-                </Card.Content>
-                <Card.Content>
-                    <List divided relaxed='very'>
-                        <List.Item>
-                            <div className={'checkbox-list'}>
-                                <Checkbox/>
-                            </div>
-                            <List.Content>
-                                <List.Header as='a'>Rachel</List.Header>
-                                <List.Description>
-                                    Last seen watching{' '}
-                                    <a>
-                                        <b>Arrested Development</b>
-                                    </a>{' '}
-                                    just now.
-                                </List.Description>
-                            </List.Content>
-                        </List.Item>
-                        <List.Item>
-                            <div className={'checkbox-list'}>
-                                <Checkbox/>
-                            </div>
-                            <List.Content>
-                                <List.Header as='a'>Lindsay</List.Header>
-                                <List.Description>
-                                    Last seen watching{' '}
-                                    <a>
-                                        <b>Bob's Burgers</b>
-                                    </a>{' '}
-                                    10 hours ago.
-                                </List.Description>
-                            </List.Content>
-                            <List.Content floated='right'>
-                                <Label as='a' basic className='label-icon-only'>
-                                    <Icon name='phone'/>
-                                </Label>
-                            </List.Content>
-                        </List.Item>
-                    </List>
-                </Card.Content>
-                <Card.Content className={'card-header-activities'}>
-                    <Card.Header  className={'section-activities'}>
-                        <Image size='mini' src='/images/integrations/trello-isotipo.png'/>
-                        <div className={'title-activities'}><span>Trello</span></div>
-                    </Card.Header>
-                </Card.Content>
-                <Card.Content>
-                    <List divided relaxed='very'>
-                        <List.Item>
-                            <div className={'checkbox-list'}>
-                                <Checkbox/>
-                            </div>
-                            <List.Content>
-                                <List.Header as='a'>Rachel</List.Header>
-                                <List.Description>
-                                    Last seen watching{' '}
-                                    <a>
-                                        <b>Arrested Development</b>
-                                    </a>{' '}
-                                    just now.
-                                </List.Description>
-                            </List.Content>
-                            <List.Content floated='right'>
-                                <Label as='a' basic className='label-icon-only'>
-                                    <Icon name='tasks'/>
-                                </Label>
-                            </List.Content>
-                        </List.Item>
-                    </List>
-                </Card.Content>
-                <Card.Content className={'card-header-activities'}>
-                    <Card.Header  className={'section-activities'}>
-                        <Image size='mini' src='/images/integrations/google-calendar-isotipo.png'/>
-                        <div className={'title-activities'}><span>Google calendar</span></div>
-                    </Card.Header>
-                </Card.Content>
-                <Card.Content>
-                    <List divided relaxed='very'>
-                        <List.Item>
-                            <div className={'checkbox-list'}>
-                                <Checkbox/>
-                            </div>
-                            <List.Content>
-                                <List.Header as='a'>Rachel</List.Header>
-                                <List.Description>
-                                    Last seen watching{' '}
-                                    <a>
-                                        <b>Arrested Development</b>
-                                    </a>{' '}
-                                    just now.
-                                </List.Description>
-                            </List.Content>
-                            <List.Content floated='right'>
-                                <Label as='a' basic className='label-icon-only'>
-                                    <Icon name='calendar alternate outline'/>
-                                </Label>
-                            </List.Content>
-                        </List.Item>
-                    </List>
-                </Card.Content>
-            </Card>
+                            <Card.Header>{name}</Card.Header>
+                            <Card.Meta>No. {id}</Card.Meta>
+                            <Card.Description>
+                                <Grid>
+                                    <Grid.Row>
+                                        <Grid.Column width={8}>
+                                            <div><Icon name='arrows alternate vertical'/> {height}</div>
+                                        </Grid.Column>
+                                        <Grid.Column width={8}>
+                                            <div><Icon name='weight'/> {weight}</div>
+                                        </Grid.Column>
+                                        <Grid.Column width={8}>
+                                            <div><Icon name='sliders horizontal'/> {base_experience}</div>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </Card.Description>
+                        </Card.Content>
+                    </Card>
+                ))}
+            </Card.Group>
         );
     }
-};
+}
 
 
-export default connect()(DashboardPage);
+const mapStateToProps = (state, props) => ({
+    pokemons: state.pokemons
+});
+
+
+const mapDispatchToProps = (dispatch) => ({
+    listPokemon: () => dispatch(startListPokemon())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);

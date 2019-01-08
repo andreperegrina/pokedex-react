@@ -1,6 +1,13 @@
 .custom-secundary-menu {
   margin: 0 !important;
   border-bottom: 1px solid rgba(34, 36, 38, .15) !important;
+  background-color:#EA5455!important;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(34,36,38,.15)!important;
+  box-shadow: 0 1px 2px 0 rgba(34,36,38,.15)!important;
+
+  .white{
+    color:white;
+  }
 
   .item {
     padding-right: 0.5rem !important;

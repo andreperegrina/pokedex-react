@@ -9,3 +9,21 @@
 .text-center{
   text-align: center;
 }
+
+.pokemon-sprite{
+  position: relative;
+
+}
+
+.pokemon-sprite img{
+  position: absolute !important;
+  top:-20px;
+  right: -10px;
+}
+
+.absolute{
+  position: absolute;
+}
+.relative{
+  position: relative;
+}

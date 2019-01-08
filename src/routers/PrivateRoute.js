@@ -18,16 +18,11 @@ export const PrivateRoute = ({
     <Route {...rest} component={(props) => (
       isAuthenticated ? (
         <div>
-            <Sidebar.Pushable as={Segment}>
-                <SidebarMenu />
-                <Sidebar.Pusher>
                     <HeaderCustom/>
                     {/*<SubHeader/>*/}
                     <Segment basic>
                         <Component {...props} />
                     </Segment>
-                </Sidebar.Pusher>
-            </Sidebar.Pushable>
         </div>
       ) : (
           <Redirect to="/" />
