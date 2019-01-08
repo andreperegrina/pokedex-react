@@ -5,11 +5,14 @@ import {
     Image,
     Button,
     Icon,
-    Grid
+    Grid,
+    Modal,
+    Header
 } from 'semantic-ui-react'
 import {startListPokemon, startGetPokemonsInfo} from '../actions/pokedex'
 import ReactTooltip from 'react-tooltip'
 
+import Pokemonintro from '@haiku/andreperegrina-pokemonintro/react';
 
 
 export class DashboardPage extends React.Component {
@@ -19,10 +22,15 @@ export class DashboardPage extends React.Component {
         this.state = {
             limit: 20,
             isShowMoreAvailable: false,
-            loading: false
+            loading: false,
+            dimmer: 'inverted',
+            open: true
         };
         this.onLoadMore = this.onLoadMore.bind(this);
     }
+
+    show = dimmer => () => this.setState({dimmer, open: true});
+    close = () => this.setState({open: false});
 
     componentDidMount() {
         this.props.listPokemon().then(() => {
@@ -49,7 +57,7 @@ export class DashboardPage extends React.Component {
 
     render() {
         const {pokemonsList} = this.props.pokemons;
-        const {limit, isShowMoreAvailable, loading} = this.state;
+        const {limit, isShowMoreAvailable, loading, open, dimmer} = this.state;
         var pokemonShow = [];
         var pokemonPreview = [];
         if (pokemonsList) {
@@ -65,6 +73,27 @@ export class DashboardPage extends React.Component {
 
         return (
             <div className='dashboard'>
+
+                <Modal basic dimmer={dimmer} open={open} onClose={this.close} centered={false}>
+                    <Modal.Content>
+                        <div className='pokmemon-animation'>
+                            <Pokemonintro loop={false}/>
+                        </div>
+                        <Modal.Description>
+                            <div className='pokemon-intro-description'>
+                                <h1>Welcome to the pokedex!</h1>
+                                <p  className='no-bottom'>Here you will able to find everything you want to now about the pokemons.</p>
+                                <p>So don't be shy and enter the site!</p>
+                            </div>
+                            <div className='pokemon-intro-actions'>
+                                <Button color='red' size='huge'
+                                    content="I'm ready!"
+                                    onClick={this.close}
+                                />
+                            </div>
+                        </Modal.Description>
+                    </Modal.Content>
+                </Modal>
                 <Card.Group centered>
                     {pokemonShow && pokemonShow.map(({id, name, weight, height, base_experience, sprites}, index) => (
                         <Card key={id}>
