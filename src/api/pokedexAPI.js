@@ -15,7 +15,7 @@ function getPokemons() {
             return axios.all(callPokemons).then(axios.spread((...responses) => {
                 for (let i = 0; i < responses.length; i++) {
                     const response = responses[i];
-                    pokemons[i]=response.data;
+                    pokemons[i] = response.data;
                 }
                 return pokemons;
             }));
@@ -26,6 +26,27 @@ function getPokemons() {
         })
 }
 
+function getPokemonsInfo(pokemonList) {
+    const callPokemons = [];
+    for (let i = 0; i < pokemonList.length; i++) {
+        const pokemonToCall = pokemonList[i];
+        callPokemons.push(axios.get(pokemonToCall.url));
+    }
+
+    return axios.all(callPokemons).then(axios.spread((...responses) => {
+        const pokemons=[];
+        for (let i = 0; i < responses.length; i++) {
+            const response = responses[i];
+            pokemons.push(response.data);
+        }
+        return pokemons;
+    })).catch(function (error) {
+        // handle error
+        console.log(error);
+    });
+}
+
 module.exports = {
-    getPokemons: getPokemons
+    getPokemons: getPokemons,
+    getPokemonsInfo: getPokemonsInfo
 };
