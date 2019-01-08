@@ -1,15 +1,12 @@
 import React from 'react';
+import {connect} from "react-redux";
 import {
     Card,
-    List,
     Image,
     Button,
     Icon,
-    Grid,
-    Popup,
+    Grid
 } from 'semantic-ui-react'
-import {connect} from "react-redux";
-import moment from "moment/moment";
 import {startListPokemon, startGetPokemonsInfo} from '../actions/pokedex'
 import ReactTooltip from 'react-tooltip'
 
@@ -62,8 +59,8 @@ export class DashboardPage extends React.Component {
 
 
         const loadingButton = () => {
-            return loading ? <Button loading attached='bottom' onClick={this.onLoadMore}>Show more</Button> :
-                <Button attached='bottom' onClick={this.onLoadMore}>Show more</Button>
+            return loading ? <Button size='big' loading attached='bottom' onClick={this.onLoadMore}>Show more</Button> :
+                <Button size='big' attached='bottom' onClick={this.onLoadMore}>Show more</Button>
         };
 
         return (

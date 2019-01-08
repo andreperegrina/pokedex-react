@@ -20,9 +20,6 @@ export const Header = ({startLogout}) => (
         </div>
 
         <Menu.Menu position='right'>
-            <Menu.Item name='editorials'>
-                <Search value={''}/>
-            </Menu.Item>
         </Menu.Menu>
     </Menu>
 );
