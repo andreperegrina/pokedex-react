@@ -1,8 +1,13 @@
-import {getPokemons, getPokemonsInfo} from '../api/pokedexAPI'
+import {getPokemons, getPokemonsInfo, getAllPokemonsInformation} from '../api/pokedexAPI'
 
 export const setListPokemons = (pokemonsList) => ({
     type: 'LIST_POKEMONS',
     pokemonsList
+});
+
+export const setPokemonSelected = (pokemonSelected) => ({
+    type: 'SET_POKEMON_SELECTED',
+    pokemonSelected
 });
 
 export const startListPokemon = () => (dispatch, getState) => {
@@ -27,5 +32,17 @@ export const startGetPokemonsInfo = (from, to) => (dispatch, getState) => {
             dispatch(setListPokemons(listPokemonsRedux));
         }
     });
+};
+
+
+export const startGetAllPokemonInformation = (pokemon) => (dispatch, getState) => {
+    return getAllPokemonsInformation(pokemon).then((pokemon) => {
+        dispatch(setPokemonSelected(pokemon));
+    });
+};
+
+
+export const startSetPokemonSelected = (pokemon) => (dispatch, getState) => {
+    dispatch(setPokemonSelected(pokemon));
 };
 
