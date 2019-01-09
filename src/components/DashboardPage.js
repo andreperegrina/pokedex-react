@@ -5,11 +5,14 @@ import {
     Image,
     Button,
     Icon,
-    Grid
+    Grid,
+    Modal,
+    Header, Popup
 } from 'semantic-ui-react'
-import {startListPokemon, startGetPokemonsInfo} from '../actions/pokedex'
-import ReactTooltip from 'react-tooltip'
+import {startListPokemon, startGetPokemonsInfo, startSetPokemonSelected} from '../actions/pokedex'
+import PokemonDetail from './PokemonDetail'
 
+import Pokemonintro from '@haiku/andreperegrina-pokemonintro/react';
 
 
 export class DashboardPage extends React.Component {
@@ -19,10 +22,16 @@ export class DashboardPage extends React.Component {
         this.state = {
             limit: 20,
             isShowMoreAvailable: false,
-            loading: false
+            loading: false,
+            dimmer: 'inverted',
+            open: true
         };
         this.onLoadMore = this.onLoadMore.bind(this);
+        this.setPokemonSelected = this.setPokemonSelected.bind(this);
     }
+
+    show = dimmer => () => this.setState({dimmer, open: true});
+    close = () => this.setState({open: false});
 
     componentDidMount() {
         this.props.listPokemon().then(() => {
@@ -47,9 +56,14 @@ export class DashboardPage extends React.Component {
         });
     };
 
+
+    setPokemonSelected = (pokemon) => {
+        this.props.setPokemonSelected(pokemon);
+    };
+
     render() {
-        const {pokemonsList} = this.props.pokemons;
-        const {limit, isShowMoreAvailable, loading} = this.state;
+        const {pokemonsList, pokemonSelected} = this.props.pokemons;
+        const {limit, isShowMoreAvailable, loading, open, dimmer} = this.state;
         var pokemonShow = [];
         var pokemonPreview = [];
         if (pokemonsList) {
@@ -59,15 +73,41 @@ export class DashboardPage extends React.Component {
 
 
         const loadingButton = () => {
-            return loading ? <Button size='big' loading attached='bottom' onClick={this.onLoadMore}>Show more</Button> :
-                <Button size='big' attached='bottom' onClick={this.onLoadMore}>Show more</Button>
+            return loading ?
+                <Button size='big' loading attached='bottom' onClick={this.onLoadMore}>Show me more</Button> :
+                <Button size='big' attached='bottom' onClick={this.onLoadMore}>Show me more</Button>
         };
 
         return (
             <div className='dashboard'>
+
+                <Modal basic dimmer={dimmer} open={open} onClose={this.close} centered={false}>
+                    <Modal.Content>
+                        <div className='pokmemon-animation'>
+                            <Pokemonintro loop={false}/>
+                        </div>
+                        <Modal.Description>
+                            <div className='pokemon-intro-description'>
+                                <h1>Welcome to the pokedex!</h1>
+                                <p className='no-bottom'>Here you will able to find everything you want to now about the
+                                    pokemons.</p>
+                                <p>So don't be shy and enter the site!</p>
+                            </div>
+                            <div className='pokemon-intro-actions'>
+                                <Button color='red' size='huge'
+                                        content="I'm ready!"
+                                        onClick={this.close}
+                                />
+                            </div>
+                        </Modal.Description>
+                    </Modal.Content>
+                </Modal>
+
                 <Card.Group centered>
                     {pokemonShow && pokemonShow.map(({id, name, weight, height, base_experience, sprites}, index) => (
-                        <Card key={id}>
+                        <Card key={id} link onClick={() => {
+                            this.setPokemonSelected(pokemonShow[index])
+                        }}>
                             <Card.Content>
                                 <div className="pokemon-sprite">
                                     <Image floated='right' size='tiny'
@@ -79,18 +119,21 @@ export class DashboardPage extends React.Component {
                                     <Grid>
                                         <Grid.Row>
                                             <Grid.Column width={8}>
-                                                <div data-tip="Height"><Icon name='arrows alternate vertical'/> {height}
-                                                </div>
-                                                <ReactTooltip/>
+                                                <Popup inverted trigger={<div data-tip="Height"><Icon
+                                                    name='arrows alternate vertical'/> {height}</div>}
+                                                       content='Height'/>
                                             </Grid.Column>
                                             <Grid.Column width={8}>
-                                                <div data-tip="Weight"><Icon name='weight'/> {weight}</div>
-                                                <ReactTooltip/>
+                                                <Popup inverted
+                                                       trigger={<div data-tip="Weight"><Icon
+                                                           name='weight'/> {weight}
+                                                       </div>} content='Weight'/>
+
                                             </Grid.Column>
                                             <Grid.Column width={8}>
-                                                <div data-tip="Experience"><Icon
-                                                    name='sliders horizontal'/> {base_experience}</div>
-                                                <ReactTooltip/>
+                                                <Popup inverted trigger={<div data-tip="Experience"><Icon
+                                                    name='sliders horizontal'/> {base_experience}</div>}
+                                                       content='Experience'/>
                                             </Grid.Column>
                                         </Grid.Row>
                                     </Grid>
@@ -118,7 +161,8 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     listPokemon: () => dispatch(startListPokemon()),
-    getPokemonsInfo: (from, to) => dispatch(startGetPokemonsInfo(from, to))
+    getPokemonsInfo: (from, to) => dispatch(startGetPokemonsInfo(from, to)),
+    setPokemonSelected: (pokemon) => dispatch(startSetPokemonSelected(pokemon))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);

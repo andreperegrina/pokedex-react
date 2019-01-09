@@ -1,7 +1,9 @@
 const axios = require('axios');
 
+const API_URL= process.env.API_URL;
+
 function getPokemons() {
-    return axios.get('http://localhost:3001/pokemon')
+    return axios.get(API_URL+'/pokemon')
         .then(function (response) {
             const callPokemons = [];
             const listPokemonsCalls = response.data.results;
@@ -46,7 +48,11 @@ function getPokemonsInfo(pokemonList) {
     });
 }
 
+function getAllPokemonsInformation(pokemon) {
+}
+
 module.exports = {
     getPokemons: getPokemons,
-    getPokemonsInfo: getPokemonsInfo
+    getPokemonsInfo: getPokemonsInfo,
+    getAllPokemonsInformation: getAllPokemonsInformation
 };
