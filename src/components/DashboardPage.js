@@ -62,20 +62,31 @@ export class DashboardPage extends React.Component {
     };
 
     render() {
-        const {pokemonsList, pokemonSelected} = this.props.pokemons;
+        const {pokemonsList, pokemonSelected, pokemonSearchList} = this.props.pokemons;
         const {limit, isShowMoreAvailable, loading, open, dimmer} = this.state;
         var pokemonShow = [];
         var pokemonPreview = [];
-        if (pokemonsList) {
+        if (pokemonSearchList) {
+            pokemonShow = pokemonSearchList
+        } else if (pokemonsList) {
             pokemonShow = pokemonsList.slice(0, limit);
         }
-        const showMoreClasses = isShowMoreAvailable ? 'bottom-load absolute' : 'hide';
-
 
         const loadingButton = () => {
-            return loading ?
-                <Button size='big' loading attached='bottom' onClick={this.onLoadMore}>Show me more</Button> :
-                <Button size='big' attached='bottom' onClick={this.onLoadMore}>Show me more</Button>
+
+            const buttonToShow = loading ?
+                <div className='bottom-load absolute'><Button size='big' loading attached='bottom'
+                                                              onClick={this.onLoadMore}>Show me more</Button></div> :
+                <div className='bottom-load absolute'><Button size='big' attached='bottom' onClick={this.onLoadMore}>Show
+                    me more</Button></div>;
+            if (pokemonSearchList) {
+                if (pokemonShow.length < pokemonSearchList.length)
+                    return buttonToShow;
+            } else if (pokemonsList)
+                if (pokemonShow.length < pokemonsList.length)
+                    return buttonToShow;
+
+            return '';
         };
 
         return (
@@ -143,9 +154,7 @@ export class DashboardPage extends React.Component {
                     ))}
                 </Card.Group>
 
-                <div className={showMoreClasses}>
-                    {loadingButton()}
-                </div>
+                {loadingButton()}
 
             </div>
 

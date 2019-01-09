@@ -10,6 +10,11 @@ export default (state = {}, action) => {
                 ...state,
                 pokemonSelected: action.pokemonSelected
             };
+        case 'SET_SEARCH_LIST_POKEMON':
+            return {
+                ...state,
+                pokemonSearchList: action.pokemonSearchList
+            };
         default:
             return state;
     }
