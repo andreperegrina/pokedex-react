@@ -46,7 +46,11 @@ function getPokemonsInfo(pokemonList) {
     });
 }
 
+function getAllPokemonsInformation(pokemon) {
+}
+
 module.exports = {
     getPokemons: getPokemons,
-    getPokemonsInfo: getPokemonsInfo
+    getPokemonsInfo: getPokemonsInfo,
+    getAllPokemonsInformation: getAllPokemonsInformation
 };
