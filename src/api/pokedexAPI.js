@@ -9,7 +9,7 @@ function getPokemons() {
             const listPokemonsCalls = response.data.results;
 
             const pokemons = response.data.results;
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < pokemons.length; i++) {
                 const pokemonToCall = listPokemonsCalls[i];
                 callPokemons.push(axios.get(pokemonToCall.url));
             }
